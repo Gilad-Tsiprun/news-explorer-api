@@ -1,0 +1,42 @@
+{
+  "name": "news-explorer-api",
+  "version": "1.0.0",
+  "description": "News explorer is a service where users can search for news articles and save them to their profiles.\r The api consists of this features:\r When the user enters a keyword in the search bar, the website sends a request to the News API service, finds all the relevant articles over the last week, and displays a list of cards for each of them.\r It displays all articles saved by a user in a special section of the website.\r And an API for user authentication and saving articles.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "lint": "npx eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Phoenix801/news-explorer-api.git"
+  },
+  "author": "Gilad Tsiprun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Phoenix801/news-explorer-api/issues"
+  },
+  "homepage": "https://github.com/Phoenix801/news-explorer-api#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.1",
+    "celebrate": "^15.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "express-rate-limit": "https://raw.githubusercontent.com/gamemaker1/test/express-rate-limit-hotfix/assets/express-rate-limit-6.0.3.tgz",
+    "express-winston": "^4.2.0",
+    "helmet": "^4.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.1.4",
+    "validator": "^13.7.0",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.6.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3",
+    "nodemon": "^2.0.15"
+  }
+}

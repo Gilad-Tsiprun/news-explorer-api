@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const AuthError = require('../errors/auth-err');
+const EmailExistsError = require('../errors/email-exists-err');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -16,7 +17,7 @@ module.exports.getUser = (req, res, next) => {
 };
 
 // the createUser request handler
-module.exports.createUser = (req, res) => {
+module.exports.createUser = (req, res, next) => {
   const {
     email,
     password,
@@ -34,7 +35,12 @@ module.exports.createUser = (req, res) => {
         return res.send({ data: userData });
       })
       // .catch(next));
-      .catch((err) => res.status(400).send({ message: err.message })));
+      .catch((err) => {
+        if (err.code === 11000) {
+          next(new EmailExistsError('A user with this email already exists'));
+        }
+      })
+      .catch(next));
 };
 
 module.exports.login = (req, res) => {

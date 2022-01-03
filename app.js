@@ -11,16 +11,17 @@ const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { limiter } = require('./middlewares/rateLimiter');
 const { errorHandler } = require('./middlewares/errorHandler');
+
 // include these before other routes
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, DB_ADDRESS } = process.env;
 const app = express();
 app.use(helmet());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://localhost:27017/news-explorerdb', {
+mongoose.connect(DB_ADDRESS, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

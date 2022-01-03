@@ -60,6 +60,10 @@ module.exports.createArticle = (req, res, next) => {
     image,
     owner,
   })
-    .then((article) => res.send({ data: article }))
+    .then((article) => {
+      // eslint-disable-next-line no-underscore-dangle
+      const { owner: articleOwner, ...articleData } = article._doc;
+      return res.send({ data: articleData });
+    })
     .catch(next);
 };

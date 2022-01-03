@@ -28,9 +28,9 @@ mongoose.connect('mongodb://localhost:27017/news-explorerdb', {
 app.use(cors());
 app.options('*', cors()); // enable requests for all routes
 
-app.use('/', limiter);
-
 app.use(requestLogger);
+
+app.use('/', limiter);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({

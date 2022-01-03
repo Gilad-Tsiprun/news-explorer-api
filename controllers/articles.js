@@ -16,12 +16,12 @@ module.exports.getArticles = (req, res, next) => {
 
 // the delete article handler
 module.exports.deleteArticle = (req, res, next) => {
-  Article.findById(req.params.id)
+  Article.findById(req.params.id).select('+owner')
     .orFail(() => {
       throw new NotFoundError('No article with matching ID found'); // Remember to throw an error so .catch handles it instead of .then
     })
     .then((article) => {
-      if (!article.owner._id.equals(req.user._id)) {
+      if (!article.owner.equals(req.user._id)) {
         throw new PermissionError('Not authorized to delete a article that doesnt belong to you');
       }
       Article.findByIdAndRemove(req.params.id)

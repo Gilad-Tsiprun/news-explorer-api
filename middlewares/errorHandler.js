@@ -6,9 +6,7 @@ const errorHandler = (err, req, res, next) => {
     .status(statusCode)
     .send({
       // check the status and display a message based on it
-      message: message
-        ? 'An error occurred on the server'
-        : message,
+      message: message || 'An error occurred on the server',
     });
 };
 

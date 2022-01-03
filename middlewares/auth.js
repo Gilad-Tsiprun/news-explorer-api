@@ -1,11 +1,12 @@
 const jwt = require('jsonwebtoken');
+const { userNotAuth } = require('../utils/errors');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const handleAuthError = (res) => {
   res
     .status(403)
-    .send({ message: 'Authorization Error' });
+    .send({ message: userNotAuth });
 };
 
 const extractBearerToken = (header) => header.replace('Bearer ', '');

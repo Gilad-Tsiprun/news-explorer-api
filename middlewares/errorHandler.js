@@ -1,3 +1,5 @@
+const { serverError } = require('../utils/errors');
+
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
   // if an error has no status, display 500
@@ -6,7 +8,7 @@ const errorHandler = (err, req, res, next) => {
     .status(statusCode)
     .send({
       // check the status and display a message based on it
-      message: message || 'An error occurred on the server',
+      message: message || serverError,
     });
 };
 

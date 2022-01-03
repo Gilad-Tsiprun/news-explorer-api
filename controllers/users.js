@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const AuthError = require('../errors/auth-err');
 const EmailExistsError = require('../errors/email-exists-err');
+const RequestError = require('../errors/request-err');
+const { userNotAuth, userEmailExists } = require('../utils/errors');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -10,7 +12,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => {
-      throw new AuthError('Not authorized'); // error thrown so .catch handles it instead .then
+      throw new AuthError(userNotAuth); // error thrown so .catch handles it instead .then
     })
     .then((user) => res.send(user))
     .catch(next);
@@ -37,13 +39,13 @@ module.exports.createUser = (req, res, next) => {
       // .catch(next));
       .catch((err) => {
         if (err.code === 11000) {
-          next(new EmailExistsError('A user with this email already exists'));
+          next(new EmailExistsError(userEmailExists));
         }
       })
       .catch(next));
 };
 
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(password, email)
     .then((user) => {
@@ -52,9 +54,7 @@ module.exports.login = (req, res) => {
       res.send({ token });
     })
     // .catch(next));
-    .catch((err) => {
-      res.status(401).send({ message: err.message });
-    });
+    .catch((err) => next(new RequestError(err.message)));
 };
 
 // module.exports.updateProfile = (req, res, next) => {

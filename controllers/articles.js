@@ -2,12 +2,14 @@ const Article = require('../models/article');
 const NotFoundError = require('../errors/not-found-err');
 const PermissionError = require('../errors/perm-err');
 const RequestError = require('../errors/request-err');
+const {
+  articleNotFound,
+  articleNotAuthToDelete,
+  articleBadRequest,
+} = require('../utils/errors');
 
 module.exports.getArticles = (req, res, next) => {
   Article.find({ owner: req.user._id })
-    // .orFail(() => {
-    //   throw new NotFoundError('No articles found'); // error thrown to invoke .catch
-    // })
     .then((article) => {
       res.send({ data: article });
     })
@@ -18,15 +20,15 @@ module.exports.getArticles = (req, res, next) => {
 module.exports.deleteArticle = (req, res, next) => {
   Article.findById(req.params.id).select('+owner')
     .orFail(() => {
-      throw new NotFoundError('No article with matching ID found'); // Remember to throw an error so .catch handles it instead of .then
+      throw new NotFoundError(articleNotFound);
     })
     .then((article) => {
       if (!article.owner.equals(req.user._id)) {
-        throw new PermissionError('Not authorized to delete a article that doesnt belong to you');
+        throw new PermissionError(articleNotAuthToDelete);
       }
       Article.findByIdAndRemove(req.params.id)
         .orFail(() => {
-          throw new NotFoundError('No article with matching ID found'); // Remember to throw an error so .catch handles it instead of .then
+          throw new NotFoundError(articleNotFound);
         })
         .then((deletedArticle) => res.send({ data: deletedArticle }))
         .catch(next);
@@ -47,7 +49,7 @@ module.exports.createArticle = (req, res, next) => {
   } = req.body;
   const owner = req.user._id;
   if (!keyword || !title || !text || !date || !source || !link || !image || !owner) {
-    throw new RequestError('incorrect request for article creation');
+    throw new RequestError(articleBadRequest);
   }
 
   Article.create({

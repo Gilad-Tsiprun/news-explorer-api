@@ -4,7 +4,7 @@ const PermissionError = require('../errors/perm-err');
 const RequestError = require('../errors/request-err');
 
 module.exports.getArticles = (req, res, next) => {
-  Article.find({})
+  Article.find({ owner: req.user._id })
     // .orFail(() => {
     //   throw new NotFoundError('No articles found'); // error thrown to invoke .catch
     // })

@@ -50,9 +50,6 @@ app.post('/signup', celebrate({
 // routes up until this point don't require authentication,
 app.use(auth); // from this point on all routes require authentication
 
-app.use('/users', require('./routes/users'));
-app.use('/articles', require('./routes/articles'));
-
 app.use('/', routes);
 
 app.use(errorLogger); // enabling the error logger

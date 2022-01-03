@@ -4,14 +4,13 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const cors = require('cors');
+require('dotenv').config();
 const routes = require('./routes/routes');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { limiter } = require('./middlewares/rateLimiter');
 const { errorHandler } = require('./middlewares/errorHandler');
-require('dotenv').config();
-
 // include these before other routes
 
 const { PORT = 3000 } = process.env;

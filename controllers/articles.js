@@ -58,6 +58,7 @@ module.exports.createArticle = (req, res, next) => {
     source,
     link,
     image,
+    owner,
   })
     .then((article) => res.send({ data: article }))
     .catch(next);
